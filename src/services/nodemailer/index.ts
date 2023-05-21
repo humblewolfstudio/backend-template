@@ -18,7 +18,7 @@ export const sendVerifyEmail = async (emailTo: string, urlToken: string) => {
             html: `<p>Click <a href="https://trashandgo.vercel.app/api/verifyEmail?t=${urlToken}">here</a> to verify your email</p>`
         };
 
-        transporter.sendMail(mailOptions, (err, info) => {
+        return transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
                 console.error(err);
                 throw 1;
