@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { APIException } from 'src/types';
+import { APIException } from '../../types';
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',

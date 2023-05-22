@@ -1,8 +1,8 @@
-import { APIException } from "src/types";
+import { APIException } from "../../types";
 import * as uuid from 'uuid';
 import { getEmail, validateEmail } from "../users";
 import { VerifyEmailSchema } from "../db.schemas";
-import { sendVerifyEmail } from "src/services/nodemailer";
+import { sendVerifyEmail } from "../../services/nodemailer";
 
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 
