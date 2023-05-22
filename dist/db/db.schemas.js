@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
-const userSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VerifyEmailSchema = exports.UserSchema = void 0;
+const mongoose_1 = require("mongoose");
+const userSchema = new mongoose_1.Schema({
     id: {
         type: String,
         required: true
@@ -29,7 +32,7 @@ const userSchema = new Schema({
         required: true
     }
 });
-const verifyEmailSchema = new Schema({
+const verifyEmailSchema = new mongoose_1.Schema({
     emailTo: {
         type: String,
         required: true
@@ -47,6 +50,6 @@ const verifyEmailSchema = new Schema({
         required: true
     }
 });
-export const UserSchema = model("User", userSchema, "Usuarios");
-export const VerifyEmailSchema = model('VerifyEmail', verifyEmailSchema, 'Verify Emails');
+exports.UserSchema = (0, mongoose_1.model)("User", userSchema, "Usuarios");
+exports.VerifyEmailSchema = (0, mongoose_1.model)('VerifyEmail', verifyEmailSchema, 'Verify Emails');
 //# sourceMappingURL=db.schemas.js.map

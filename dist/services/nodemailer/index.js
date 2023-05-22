@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,16 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import nodemailer from 'nodemailer';
-import { APIException } from 'src/types';
-const transporter = nodemailer.createTransport({
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendVerifyEmail = void 0;
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const types_1 = require("src/types");
+const transporter = nodemailer_1.default.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.NODEMAILER_USER,
         pass: process.env.NODEMAILER_PASSWORD
     }
 });
-export const sendVerifyEmail = (emailTo, urlToken) => __awaiter(void 0, void 0, void 0, function* () {
+const sendVerifyEmail = (emailTo, urlToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mailOptions = {
             from: process.env.NODEMAILER_USER,
@@ -37,10 +43,11 @@ export const sendVerifyEmail = (emailTo, urlToken) => __awaiter(void 0, void 0, 
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(500, 'Error sending Verification Email');
+                return new types_1.APIException(500, 'Error sending Verification Email');
         }
         console.error(e);
-        return new APIException(500, 'Internal server error');
+        return new types_1.APIException(500, 'Internal server error');
     }
 });
+exports.sendVerifyEmail = sendVerifyEmail;
 //# sourceMappingURL=index.js.map

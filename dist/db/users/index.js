@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,11 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { APIException } from "../../types";
-import { UserSchema } from "../db.schemas";
-export const userExists = (id) => __awaiter(void 0, void 0, void 0, function* () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateEmail = exports.getEmail = exports.getProfile = exports.getUserByToken = exports.getUserByEmail = exports.getUserByUsername = exports.userExists = void 0;
+const types_1 = require("../../types");
+const db_schemas_1 = require("../db.schemas");
+const userExists = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ id }).select(['-_id', '-__v']);
+        const user = yield db_schemas_1.UserSchema.findOne({ id }).select(['-_id', '-__v']);
         if (!user)
             throw 1;
         return user;
@@ -19,14 +22,15 @@ export const userExists = (id) => __awaiter(void 0, void 0, void 0, function* ()
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const getUserByUsername = (username) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userExists = userExists;
+const getUserByUsername = (username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ username }).select(['-_id', '-__v']);
+        const user = yield db_schemas_1.UserSchema.findOne({ username }).select(['-_id', '-__v']);
         if (!user)
             throw 1;
         return user;
@@ -34,14 +38,15 @@ export const getUserByUsername = (username) => __awaiter(void 0, void 0, void 0,
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const getUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getUserByUsername = getUserByUsername;
+const getUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ email }).select(['-_id', '-__v']);
+        const user = yield db_schemas_1.UserSchema.findOne({ email }).select(['-_id', '-__v']);
         if (!user)
             throw 1;
         return user;
@@ -49,14 +54,15 @@ export const getUserByEmail = (email) => __awaiter(void 0, void 0, void 0, funct
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const getUserByToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getUserByEmail = getUserByEmail;
+const getUserByToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ token }).select(['-_id', '-__v']);
+        const user = yield db_schemas_1.UserSchema.findOne({ token }).select(['-_id', '-__v']);
         if (!user)
             throw 1;
         return user;
@@ -64,14 +70,15 @@ export const getUserByToken = (token) => __awaiter(void 0, void 0, void 0, funct
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const getProfile = (id) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getUserByToken = getUserByToken;
+const getProfile = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ id }).select(['-_id', '-__v']);
+        const user = yield db_schemas_1.UserSchema.findOne({ id }).select(['-_id', '-__v']);
         if (!user)
             throw 1;
         return { username: user.username, email: user.email, validated: user.validated, radarDistance: user.radarDistance };
@@ -79,14 +86,15 @@ export const getProfile = (id) => __awaiter(void 0, void 0, void 0, function* ()
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const getEmail = (id) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getProfile = getProfile;
+const getEmail = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ id });
+        const user = yield db_schemas_1.UserSchema.findOne({ id });
         if (!user)
             throw 1;
         return { email: user.email, validated: user.validated };
@@ -94,14 +102,15 @@ export const getEmail = (id) => __awaiter(void 0, void 0, void 0, function* () {
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
-        return new APIException(500, 'Internal server error');
+        return new types_1.APIException(500, 'Internal server error');
     }
 });
-export const validateEmail = (id) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getEmail = getEmail;
+const validateEmail = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield UserSchema.findOne({ id });
+        const user = yield db_schemas_1.UserSchema.findOne({ id });
         if (!user)
             throw 1;
         user.validated = true;
@@ -111,10 +120,11 @@ export const validateEmail = (id) => __awaiter(void 0, void 0, void 0, function*
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
         }
         console.error(e);
-        return new APIException(500, 'Internal server error');
+        return new types_1.APIException(500, 'Internal server error');
     }
 });
+exports.validateEmail = validateEmail;
 //# sourceMappingURL=index.js.map

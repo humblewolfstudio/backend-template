@@ -1,3 +1,27 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,15 +31,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { APIException } from "../../types";
-import { UserSchema } from "../db.schemas";
-import { getUserByEmail, getUserByToken, getUserByUsername } from "../users";
-import * as bcrypt from 'bcrypt';
-import * as uuid from 'uuid';
-export const logInUser = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authenticate = exports.registerUser = exports.logInUser = void 0;
+const types_1 = require("../../types");
+const db_schemas_1 = require("../db.schemas");
+const users_1 = require("../users");
+const bcrypt = __importStar(require("bcrypt"));
+const uuid = __importStar(require("uuid"));
+const logInUser = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield getUserByUsername(username);
-        if (user instanceof APIException)
+        const user = yield (0, users_1.getUserByUsername)(username);
+        if (user instanceof types_1.APIException)
             throw 1;
         const matchPassword = yield bcrypt.compare(password, user.hashedPw);
         if (matchPassword) {
@@ -28,52 +54,55 @@ export const logInUser = (username, password) => __awaiter(void 0, void 0, void 
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'User doesnt exist');
+                return new types_1.APIException(400, 'User doesnt exist');
             case 2:
-                return new APIException(401, "Unauthorized");
+                return new types_1.APIException(401, "Unauthorized");
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const registerUser = (username, password, email) => __awaiter(void 0, void 0, void 0, function* () {
+exports.logInUser = logInUser;
+const registerUser = (username, password, email) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userExists = yield getUserByUsername(username);
-        if (!(userExists instanceof APIException))
+        const userExists = yield (0, users_1.getUserByUsername)(username);
+        if (!(userExists instanceof types_1.APIException))
             throw 1;
-        const emailExists = yield getUserByEmail(email);
-        if (!(emailExists instanceof APIException))
+        const emailExists = yield (0, users_1.getUserByEmail)(email);
+        if (!(emailExists instanceof types_1.APIException))
             throw 2;
         const hashedPw = yield bcrypt.hash(password, 12);
         const id = uuid.v4();
         const token = uuid.v4();
         const radarDistance = 1000;
         const validated = false;
-        const user = yield UserSchema.create({ id, username, email, hashedPw, token, validated, radarDistance });
+        const user = yield db_schemas_1.UserSchema.create({ id, username, email, hashedPw, token, validated, radarDistance });
         return { username, id, email, token };
     }
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(400, 'Username already exists');
+                return new types_1.APIException(400, 'Username already exists');
             case 2:
-                return new APIException(400, 'Account with this email already exists');
+                return new types_1.APIException(400, 'Account with this email already exists');
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
-export const authenticate = (token) => __awaiter(void 0, void 0, void 0, function* () {
+exports.registerUser = registerUser;
+const authenticate = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield getUserByToken(token);
-        if (user instanceof APIException)
+        const user = yield (0, users_1.getUserByToken)(token);
+        if (user instanceof types_1.APIException)
             throw 1;
         return { id: user.id, username: user.username, email: user.email };
     }
     catch (e) {
         switch (e) {
             case 1:
-                return new APIException(401, "Unauthorized");
+                return new types_1.APIException(401, "Unauthorized");
         }
     }
-    return new APIException(500, 'Internal server error');
+    return new types_1.APIException(500, 'Internal server error');
 });
+exports.authenticate = authenticate;
 //# sourceMappingURL=index.js.map
