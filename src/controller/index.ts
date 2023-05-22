@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getProfile, userExists } from "../db/users";
 import { APIException } from "../types";
 import { authenticate, logInUser, registerUser } from "../db/auth";
-import { generateVerifyEmail, verifyEmail } from "src/db/verifyEmail";
+import { generateVerifyEmail, verifyEmail } from "../db/verifyEmail";
 
 const controller: any = {};
 

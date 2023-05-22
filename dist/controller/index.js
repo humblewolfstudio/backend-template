@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../db/users");
 const types_1 = require("../types");
 const auth_1 = require("../db/auth");
-const verifyEmail_1 = require("src/db/verifyEmail");
+const verifyEmail_1 = require("../db/verifyEmail");
 const controller = {};
 controller.login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const username = String(req.body.username);
