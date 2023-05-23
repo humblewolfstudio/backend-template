@@ -33,11 +33,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyEmail = exports.generateVerifyEmail = void 0;
-const types_1 = require("src/types");
+const types_1 = require("../../types");
 const uuid = __importStar(require("uuid"));
 const users_1 = require("../users");
 const db_schemas_1 = require("../db.schemas");
-const nodemailer_1 = require("src/services/nodemailer");
+const nodemailer_1 = require("../../services/nodemailer");
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 const generateVerifyEmail = (user_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendVerifyEmail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const types_1 = require("src/types");
+const types_1 = require("../../types");
 const transporter = nodemailer_1.default.createTransport({
     service: 'gmail',
     auth: {
