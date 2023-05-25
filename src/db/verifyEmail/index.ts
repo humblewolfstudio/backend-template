@@ -21,7 +21,7 @@ export const generateVerifyEmail = async (user_id: string) => {
 
         const exists = await VerifyEmailSchema.findOne({ user_id });
 
-        if (exists && exists.maxTime > Date.now()) throw 3; //si el trobem i la data maxima es mes gran que la actual li diem que ha te un correu
+        if (exists && exists.maxTime > Date.now()) throw 3; //si el trobem i la data maxima es mes gran que la actual li diem que ja te un correu
         if (exists && exists.maxTime < Date.now()) await VerifyEmailSchema.deleteOne({ user_id }); //si el trobem i la data maxima es mes petita que la atual, la eliminem
 
         await VerifyEmailSchema.create({ user_id, maxTime, urlToken, emailTo });
@@ -60,7 +60,7 @@ export const verifyEmail = async (urlToken: string) => {
             case 1:
                 return new APIException(400, 'Doesnt exist...');
             case 2:
-                return new APIException(400, 'Verification Mail has already expired');
+                return new APIException(400, 'Verification link has already expired');
         }
         console.error(e);
         return new APIException(500, 'Internal server error');

@@ -32,14 +32,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEmail = exports.generateVerifyEmail = void 0;
+exports.changePassword = exports.generateChangePassowrd = void 0;
 const types_1 = require("../../types");
 const uuid = __importStar(require("uuid"));
 const users_1 = require("../users");
 const db_schemas_1 = require("../db.schemas");
-const nodemailer_1 = require("../../services/nodemailer");
+const nodemailer_1 = require("src/services/nodemailer");
+const bcrypt = __importStar(require("bcrypt"));
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
-const generateVerifyEmail = (user_id) => __awaiter(void 0, void 0, void 0, function* () {
+const generateChangePassowrd = (user_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const urlToken = uuid.v4();
         const maxTime = Date.now() + oneWeek;
@@ -47,16 +48,13 @@ const generateVerifyEmail = (user_id) => __awaiter(void 0, void 0, void 0, funct
         if (userMail instanceof types_1.APIException)
             throw 1;
         const emailTo = userMail.email;
-        const validated = userMail.validated;
-        if (validated)
-            throw 2;
-        const exists = yield db_schemas_1.VerifyEmailSchema.findOne({ user_id });
+        const exists = yield db_schemas_1.ChangePasswordSchema.findOne({ user_id });
         if (exists && exists.maxTime > Date.now())
-            throw 3;
+            throw 2;
         if (exists && exists.maxTime < Date.now())
-            yield db_schemas_1.VerifyEmailSchema.deleteOne({ user_id });
-        yield db_schemas_1.VerifyEmailSchema.create({ user_id, maxTime, urlToken, emailTo });
-        const email = yield (0, nodemailer_1.sendVerifyEmail)(emailTo, urlToken);
+            yield db_schemas_1.ChangePasswordSchema.deleteOne({ user_id });
+        yield db_schemas_1.ChangePasswordSchema.create({ user_id, maxTime, urlToken });
+        const email = yield (0, nodemailer_1.sendChangePasswordEmail)(emailTo, urlToken);
         return email;
     }
     catch (e) {
@@ -64,38 +62,42 @@ const generateVerifyEmail = (user_id) => __awaiter(void 0, void 0, void 0, funct
             case 1:
                 return new types_1.APIException(400, 'User doesnt exist');
             case 2:
-                return new types_1.APIException(400, 'Email already validated');
-            case 3:
                 return new types_1.APIException(400, 'Email already sent');
         }
         console.error(e);
         return new types_1.APIException(500, 'Internal server error');
     }
 });
-exports.generateVerifyEmail = generateVerifyEmail;
-const verifyEmail = (urlToken) => __awaiter(void 0, void 0, void 0, function* () {
+exports.generateChangePassowrd = generateChangePassowrd;
+const changePassword = (urlToken, newPassword) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const verifyEmail = yield db_schemas_1.VerifyEmailSchema.findOne({ urlToken });
-        if (!verifyEmail)
+        const changePassword = yield db_schemas_1.ChangePasswordSchema.findOne({ urlToken });
+        if (!changePassword)
             throw 1;
-        if (verifyEmail.maxTime < Date.now()) {
-            yield db_schemas_1.VerifyEmailSchema.deleteOne({ urlToken });
+        if (Date.now() > changePassword.maxTime)
             throw 2;
-        }
-        yield db_schemas_1.VerifyEmailSchema.deleteOne({ urlToken });
-        const validated = yield (0, users_1.validateEmail)(verifyEmail.user_id);
-        return validated;
+        const id = changePassword.user_id;
+        const user = yield db_schemas_1.UserSchema.findOne({ id });
+        if (!user)
+            throw 3;
+        user.hashedPw = yield bcrypt.hash(newPassword, 12);
+        user.token = uuid.v4();
+        user.save();
+        yield db_schemas_1.ChangePasswordSchema.deleteOne({ urlToken });
+        return true;
     }
     catch (e) {
         switch (e) {
             case 1:
-                return new types_1.APIException(400, 'Doesnt exist...');
+                return new types_1.APIException(400, 'Cant change password, this urlToken doesnt exist');
             case 2:
-                return new types_1.APIException(400, 'Verification link has already expired');
+                return new types_1.APIException(400, 'Change Password token has already expired');
+            case 3:
+                return new types_1.APIException(400, 'User doesnt exist');
         }
         console.error(e);
         return new types_1.APIException(500, 'Internal server error');
     }
 });
-exports.verifyEmail = verifyEmail;
+exports.changePassword = changePassword;
 //# sourceMappingURL=index.js.map

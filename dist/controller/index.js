@@ -13,6 +13,7 @@ const users_1 = require("../db/users");
 const types_1 = require("../types");
 const auth_1 = require("../db/auth");
 const verifyEmail_1 = require("../db/verifyEmail");
+const changePassword_1 = require("../db/changePassword");
 const controller = {};
 controller.login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const username = String(req.body.username);
@@ -72,6 +73,28 @@ controller.verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, functio
     if (verified instanceof types_1.APIException)
         return res.status(verified.status).send(verified.message);
     return res.status(200).send(verified);
+});
+controller.generateChangePassowrd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.headers.token ? String(req.headers.token) : '';
+    if (token === '')
+        return res.status(400).send('Token is required');
+    const auth = yield (0, auth_1.authenticate)(token);
+    if (auth instanceof types_1.APIException)
+        return res.status(auth.status).send(auth.message);
+    const email = yield (0, changePassword_1.generateChangePassowrd)(auth.id);
+    if (email instanceof types_1.APIException)
+        return res.status(email.status).send(email.message);
+    return res.status(200).send(email);
+});
+controller.changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const urlToken = req.headers.urlToken ? String(req.headers.urlToken) : '';
+    const newPassword = req.body.newPassword ? String(req.body.newPassword) : '';
+    if (urlToken === '')
+        return res.status(400).send('urlToken is required');
+    const changed = yield (0, changePassword_1.changePassword)(urlToken, newPassword);
+    if (changed instanceof types_1.APIException)
+        return res.status(changed.status).send(changed.message);
+    return res.status(200).send(true);
 });
 exports.default = controller;
 //# sourceMappingURL=index.js.map

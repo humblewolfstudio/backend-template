@@ -38,5 +38,7 @@ router.get('/authenticate', controller_1.default.authenticate);
 router.get('/getProfile', defaultEndpoints, controller_1.default.getProfile);
 router.get('/generateVerify', credentialsEndpoints, controller_1.default.generateVerify);
 router.get('/verifyEmail', controller_1.default.verifyEmail);
+router.get('/generateChangePassowrd', credentialsEndpoints, controller_1.default.generateChangePassowrd);
+router.post('/changePassword', controller_1.default.changePassword);
 exports.default = router;
 //# sourceMappingURL=index.js.map

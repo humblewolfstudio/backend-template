@@ -43,5 +43,7 @@ router.get('/authenticate', controller.authenticate);
 router.get('/getProfile', defaultEndpoints, controller.getProfile);
 router.get('/generateVerify', credentialsEndpoints, controller.generateVerify);
 router.get('/verifyEmail', controller.verifyEmail);
+router.get('/generateChangePassowrd', credentialsEndpoints, controller.generateChangePassowrd);
+router.post('/changePassword', controller.changePassword);
 
 export default router;

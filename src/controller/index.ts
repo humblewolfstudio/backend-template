@@ -3,6 +3,7 @@ import { getProfile, userExists } from "../db/users";
 import { APIException } from "../types";
 import { authenticate, logInUser, registerUser } from "../db/auth";
 import { generateVerifyEmail, verifyEmail } from "../db/verifyEmail";
+import { changePassword, generateChangePassowrd } from "../db/changePassword";
 
 const controller: any = {};
 
@@ -64,6 +65,28 @@ controller.verifyEmail = async (req: Request, res: Response) => {
 
     if (verified instanceof APIException) return res.status(verified.status).send(verified.message);
     return res.status(200).send(verified);
+}
+
+controller.generateChangePassowrd = async (req: Request, res: Response) => {
+    const token = req.headers.token ? String(req.headers.token) : '';
+    if (token === '') return res.status(400).send('Token is required');
+    const auth = await authenticate(token);
+    if (auth instanceof APIException) return res.status(auth.status).send(auth.message);
+
+    const email = await generateChangePassowrd(auth.id);
+
+    if (email instanceof APIException) return res.status(email.status).send(email.message);
+    return res.status(200).send(email);
+}
+
+controller.changePassword = async (req: Request, res: Response) => {
+    const urlToken = req.headers.urlToken ? String(req.headers.urlToken) : '';
+    const newPassword = req.body.newPassword ? String(req.body.newPassword) : '';
+    if (urlToken === '') return res.status(400).send('urlToken is required');
+
+    const changed = await changePassword(urlToken, newPassword);
+    if (changed instanceof APIException) return res.status(changed.status).send(changed.message);
+    return res.status(200).send(true);
 }
 
 export default controller;

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IUser, IVerifyEmail } from "../types";
+import { IChangePassword, IUser, IVerifyEmail } from "../types";
 
 const userSchema = new Schema<IUser>({
     id: {
@@ -51,5 +51,21 @@ const verifyEmailSchema = new Schema<IVerifyEmail>({
     }
 });
 
+const changePasswordSchema = new Schema<IChangePassword>({
+    urlToken: {
+        type: String,
+        required: true
+    },
+    user_id: {
+        type: String,
+        required: true
+    },
+    maxTime: {
+        type: Number,
+        required: true
+    }
+});
+
 export const UserSchema = model<IUser>("User", userSchema, "Usuarios");
 export const VerifyEmailSchema = model<IVerifyEmail>('VerifyEmail', verifyEmailSchema, 'Verify Emails');
+export const ChangePasswordSchema = model<IChangePassword>('ChangePassword', changePasswordSchema, 'Change Passwords');

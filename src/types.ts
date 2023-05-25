@@ -15,6 +15,12 @@ export interface IVerifyEmail {
     user_id: string
 }
 
+export interface IChangePassword {
+    user_id: string,
+    maxTime: number,
+    urlToken: string
+}
+
 export class APIException {
     message: string
     status: number

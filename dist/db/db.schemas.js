@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VerifyEmailSchema = exports.UserSchema = void 0;
+exports.ChangePasswordSchema = exports.VerifyEmailSchema = exports.UserSchema = void 0;
 const mongoose_1 = require("mongoose");
 const userSchema = new mongoose_1.Schema({
     id: {
@@ -50,6 +50,21 @@ const verifyEmailSchema = new mongoose_1.Schema({
         required: true
     }
 });
+const changePasswordSchema = new mongoose_1.Schema({
+    urlToken: {
+        type: String,
+        required: true
+    },
+    user_id: {
+        type: String,
+        required: true
+    },
+    maxTime: {
+        type: Number,
+        required: true
+    }
+});
 exports.UserSchema = (0, mongoose_1.model)("User", userSchema, "Usuarios");
 exports.VerifyEmailSchema = (0, mongoose_1.model)('VerifyEmail', verifyEmailSchema, 'Verify Emails');
+exports.ChangePasswordSchema = (0, mongoose_1.model)('ChangePassword', changePasswordSchema, 'Change Passwords');
 //# sourceMappingURL=db.schemas.js.map
