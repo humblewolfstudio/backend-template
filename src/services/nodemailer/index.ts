@@ -42,7 +42,7 @@ export const sendChangePasswordEmail = async (emailTo: string, urlToken: string)
             from: process.env.NODEMAILER_USER,
             to: emailTo,
             subject: 'Change Password Trash&Go',
-            html: `<p>Click <a href="https://trashandgo.vercel.app/api/changePassword?t=${urlToken}">here</a> to change your password</p>`
+            html: `<p>Click <a href="https://trashandgo.vercel.app/changePassword?t=${urlToken}">here</a> to change your password</p>`
         };
 
         return transporter.sendMail(mailOptions, (err, info) => {
