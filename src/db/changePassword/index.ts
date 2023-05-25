@@ -2,7 +2,7 @@ import { APIException } from "../../types";
 import * as uuid from 'uuid';
 import { getEmail, userExists } from "../users";
 import { ChangePasswordSchema, UserSchema } from "../db.schemas";
-import { sendChangePasswordEmail } from "src/services/nodemailer";
+import { sendChangePasswordEmail } from "../../services/nodemailer";
 import * as bcrypt from 'bcrypt';
 
 const oneWeek = 7 * 24 * 60 * 60 * 1000;

@@ -37,7 +37,7 @@ const types_1 = require("../../types");
 const uuid = __importStar(require("uuid"));
 const users_1 = require("../users");
 const db_schemas_1 = require("../db.schemas");
-const nodemailer_1 = require("src/services/nodemailer");
+const nodemailer_1 = require("../../services/nodemailer");
 const bcrypt = __importStar(require("bcrypt"));
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
 const generateChangePassowrd = (user_id) => __awaiter(void 0, void 0, void 0, function* () {
