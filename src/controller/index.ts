@@ -80,8 +80,6 @@ controller.generateChangePassowrd = async (req: Request, res: Response) => {
 }
 
 controller.changePassword = async (req: Request, res: Response) => {
-    console.log(req.headers);
-    console.log(req.headers.urltoken);
     const urlToken = req.headers.urltoken ? String(req.headers.urltoken) : '';
     const newPassword = req.body.newPassword ? String(req.body.newPassword) : '';
     if (urlToken === '') return res.status(400).send('urlToken is required');
