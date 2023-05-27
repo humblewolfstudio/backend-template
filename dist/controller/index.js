@@ -88,8 +88,8 @@ controller.generateChangePassowrd = (req, res) => __awaiter(void 0, void 0, void
 });
 controller.changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.headers);
-    console.log(req.headers.urlToken);
-    const urlToken = req.headers.urlToken ? String(req.headers.urlToken) : '';
+    console.log(req.headers.urltoken);
+    const urlToken = req.headers.urltoken ? String(req.headers.urltoken) : '';
     const newPassword = req.body.newPassword ? String(req.body.newPassword) : '';
     if (urlToken === '')
         return res.status(400).send('urlToken is required');
