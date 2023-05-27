@@ -87,6 +87,9 @@ controller.generateChangePassowrd = (req, res) => __awaiter(void 0, void 0, void
     return res.status(200).send(email);
 });
 controller.changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req);
+    console.log('-------------------------');
+    console.log(req.headers);
     const urlToken = req.headers.urlToken ? String(req.headers.urlToken) : '';
     const newPassword = req.body.newPassword ? String(req.body.newPassword) : '';
     if (urlToken === '')
