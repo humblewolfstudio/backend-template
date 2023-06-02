@@ -40,5 +40,8 @@ router.get('/generateVerify', credentialsEndpoints, controller_1.default.generat
 router.get('/verifyEmail', controller_1.default.verifyEmail);
 router.get('/generateChangePassowrd', credentialsEndpoints, controller_1.default.generateChangePassowrd);
 router.post('/changePassword', controller_1.default.changePassword);
+router.post('/upload', uploadEndpoints, controller_1.default.upload);
+router.get('/getTrash', defaultEndpoints, controller_1.default.getTrash);
+router.get('/changeRadarDistance', credentialsEndpoints, controller_1.default.changeRadarDistance);
 exports.default = router;
 //# sourceMappingURL=index.js.map

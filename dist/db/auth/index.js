@@ -94,7 +94,7 @@ const authenticate = (token) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield (0, users_1.getUserByToken)(token);
         if (user instanceof types_1.APIException)
             throw 1;
-        return { id: user.id, username: user.username, email: user.email };
+        return { id: user.id, username: user.username, email: user.email, distance: user.radarDistance };
     }
     catch (e) {
         switch (e) {

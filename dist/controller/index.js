@@ -14,6 +14,8 @@ const types_1 = require("../types");
 const auth_1 = require("../db/auth");
 const verifyEmail_1 = require("../db/verifyEmail");
 const changePassword_1 = require("../db/changePassword");
+const images_1 = require("../db/images");
+const trash_1 = require("../db/trash");
 const controller = {};
 controller.login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const username = String(req.body.username);
@@ -95,6 +97,72 @@ controller.changePassword = (req, res) => __awaiter(void 0, void 0, void 0, func
     if (changed instanceof types_1.APIException)
         return res.status(changed.status).send(changed.message);
     return res.status(200).send(true);
+});
+controller.upload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.headers.token ? String(req.headers.token) : "";
+    if (token === '')
+        return res.status(400).send('Token is required');
+    const auth = yield (0, auth_1.authenticate)(token);
+    if (auth instanceof types_1.APIException)
+        return res.status(auth.status).send(auth.message);
+    if (!req.file)
+        return res.status(400).send('There has to be an image with the post');
+    const image_id = yield (0, images_1.saveImage)(req.file.filename);
+    if (image_id instanceof types_1.APIException)
+        return res.status(image_id.status).send(image_id.message);
+    try {
+        const trash = yield (0, trash_1.createTrash)(auth.id, req.body.location, image_id, req.file.filename, req.body.tags, req.body.desc);
+        if (trash instanceof types_1.APIException)
+            return res.status(trash.status).send(trash.message);
+        return res.status(200).send(trash);
+    }
+    catch (e) {
+        return res.status(500).send('Internal server error');
+    }
+});
+controller.getTrash = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.headers.token ? String(req.headers.token) : "";
+    if (token === '')
+        return res.status(400).send('Token is required');
+    const auth = yield (0, auth_1.authenticate)(token);
+    if (auth instanceof types_1.APIException)
+        return res.status(auth.status).send(auth.message);
+    try {
+        const nearestTrashes = yield (0, trash_1.getNearestTrashes)(req.body.location, req.body.distance, req.body.tag);
+        if (nearestTrashes instanceof types_1.APIException)
+            return res.status(nearestTrashes.status).send(nearestTrashes.message);
+        return res.status(200).json(nearestTrashes);
+    }
+    catch (e) {
+        return res.status(500).send('Internal server error');
+    }
+});
+controller.changeRadarDistance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.headers.token ? String(req.headers.token) : "";
+    if (token === '')
+        return res.status(400).send('Token is required');
+    const auth = yield (0, auth_1.authenticate)(token);
+    if (auth instanceof types_1.APIException)
+        return res.status(auth.status).send(auth.message);
+    const dist = Number(req.query.dist);
+    try {
+        if (dist === undefined || Number.isNaN(dist)) {
+            return res.status(400).send('Input a distance please');
+        }
+        else if (dist < 25) {
+            return res.status(400).send('Minimum distance is 25');
+        }
+        else if (dist > 5000) {
+            return res.status(400).send('Maximum distance is 5000');
+        }
+        const response = yield (0, users_1.changeRadarDistance)(auth.id, dist);
+        if (response instanceof types_1.APIException)
+            return res.status(response.status).send(response.message);
+        return res.status(200).send(response);
+    }
+    catch (e) {
+        return res.status(500).send('Internal server error');
+    }
 });
 exports.default = controller;
 //# sourceMappingURL=index.js.map
