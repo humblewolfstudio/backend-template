@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TrashSchema = exports.ImageSchema = exports.ChangePasswordSchema = exports.VerifyEmailSchema = exports.UserSchema = void 0;
+exports.NotificationSchema = exports.TrashSchema = exports.ImageSchema = exports.ChangePasswordSchema = exports.VerifyEmailSchema = exports.UserSchema = void 0;
 const mongoose_1 = require("mongoose");
 const userSchema = new mongoose_1.Schema({
     id: {
@@ -117,10 +117,21 @@ const trashSchema = new mongoose_1.Schema({
         required: true
     }
 });
+const notificationSchema = new mongoose_1.Schema({
+    id: {
+        type: String,
+        required: true
+    },
+    notification_token: {
+        type: String,
+        required: true
+    }
+});
 trashSchema.index({ location: "2dsphere" });
 exports.UserSchema = (0, mongoose_1.model)("User", userSchema, "Usuarios");
 exports.VerifyEmailSchema = (0, mongoose_1.model)('VerifyEmail', verifyEmailSchema, 'Verify Emails');
 exports.ChangePasswordSchema = (0, mongoose_1.model)('ChangePassword', changePasswordSchema, 'Change Passwords');
 exports.ImageSchema = (0, mongoose_1.model)('Image', imageSchema, 'Images');
 exports.TrashSchema = (0, mongoose_1.model)('Trash', trashSchema, 'Trash');
+exports.NotificationSchema = (0, mongoose_1.model)('Notification', notificationSchema, 'Notifications');
 //# sourceMappingURL=db.schemas.js.map

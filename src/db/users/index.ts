@@ -1,5 +1,5 @@
 import { APIException, IUser } from "../../types";
-import { UserSchema } from "../db.schemas"
+import { NotificationSchema, UserSchema } from "../db.schemas"
 
 type ProfileData = {
     username: string,
@@ -132,6 +132,19 @@ export const changeRadarDistance = async (id: string, radarDistance: number) => 
         switch (e) {
             case 1:
                 return new APIException(400, 'User doesnt exist');
+        }
+        console.error(e);
+        return new APIException(500, 'Internal server error');
+    }
+}
+
+export const assignNotificationToken = async (id: string, notification_token: string) => {
+    try {
+        const notification = await NotificationSchema.create({ id, notification_token });
+        return notification;
+    } catch (e) {
+        switch (e) {
+
         }
         console.error(e);
         return new APIException(500, 'Internal server error');

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { changeRadarDistance, getProfile, userExists } from "../db/users";
+import { assignNotificationToken, changeRadarDistance, getProfile, userExists } from "../db/users";
 import { APIException } from "../types";
 import { authenticate, logInUser, registerUser } from "../db/auth";
 import { generateVerifyEmail, verifyEmail } from "../db/verifyEmail";
@@ -149,6 +149,19 @@ controller.changeRadarDistance = async (req: Request, res: Response) => {
     } catch (e) {
         return res.status(500).send('Internal server error');
     }
+}
+
+controller.addNotificationToken = async (req: Request, res: Response) => {
+    const notification_token = req.body.notification_token;
+    const token = req.headers.token ? String(req.headers.token) : "";
+
+    if (token === '') return res.status(400).send('Token is required');
+    const auth = await authenticate(token);
+    if (auth instanceof APIException) return res.status(auth.status).send(auth.message);
+
+    const notification = await assignNotificationToken(auth.id, notification_token);
+    if (notification instanceof APIException) return res.status(notification.status).send(notification.message);
+    return res.status(200).send(true);
 }
 
 export default controller;

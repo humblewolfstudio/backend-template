@@ -164,5 +164,18 @@ controller.changeRadarDistance = (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(500).send('Internal server error');
     }
 });
+controller.addNotificationToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const notification_token = req.body.notification_token;
+    const token = req.headers.token ? String(req.headers.token) : "";
+    if (token === '')
+        return res.status(400).send('Token is required');
+    const auth = yield (0, auth_1.authenticate)(token);
+    if (auth instanceof types_1.APIException)
+        return res.status(auth.status).send(auth.message);
+    const notification = yield (0, users_1.assignNotificationToken)(auth.id, notification_token);
+    if (notification instanceof types_1.APIException)
+        return res.status(notification.status).send(notification.message);
+    return res.status(200).send(true);
+});
 exports.default = controller;
 //# sourceMappingURL=index.js.map

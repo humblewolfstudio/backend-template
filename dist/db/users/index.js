@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeRadarDistance = exports.validateEmail = exports.getEmail = exports.getProfile = exports.getUserByToken = exports.getUserByEmail = exports.getUserByUsername = exports.userExists = void 0;
+exports.assignNotificationToken = exports.changeRadarDistance = exports.validateEmail = exports.getEmail = exports.getProfile = exports.getUserByToken = exports.getUserByEmail = exports.getUserByUsername = exports.userExists = void 0;
 const types_1 = require("../../types");
 const db_schemas_1 = require("../db.schemas");
 const userExists = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -146,4 +146,17 @@ const changeRadarDistance = (id, radarDistance) => __awaiter(void 0, void 0, voi
     }
 });
 exports.changeRadarDistance = changeRadarDistance;
+const assignNotificationToken = (id, notification_token) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const notification = yield db_schemas_1.NotificationSchema.create({ id, notification_token });
+        return notification;
+    }
+    catch (e) {
+        switch (e) {
+        }
+        console.error(e);
+        return new types_1.APIException(500, 'Internal server error');
+    }
+});
+exports.assignNotificationToken = assignNotificationToken;
 //# sourceMappingURL=index.js.map

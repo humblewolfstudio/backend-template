@@ -52,4 +52,7 @@ router.get('/getTrash', defaultEndpoints, controller.getTrash);
 
 router.get('/changeRadarDistance', credentialsEndpoints, controller.changeRadarDistance);
 
+//NOTIFICATIONS
+router.post('/addNotificationToken', credentialsEndpoints, controller.addNotificationToken);
+
 export default router;

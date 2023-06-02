@@ -43,5 +43,6 @@ router.post('/changePassword', controller_1.default.changePassword);
 router.post('/upload', uploadEndpoints, controller_1.default.upload);
 router.get('/getTrash', defaultEndpoints, controller_1.default.getTrash);
 router.get('/changeRadarDistance', credentialsEndpoints, controller_1.default.changeRadarDistance);
+router.post('/addNotificationToken', credentialsEndpoints, controller_1.default.addNotificationToken);
 exports.default = router;
 //# sourceMappingURL=index.js.map

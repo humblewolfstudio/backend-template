@@ -43,6 +43,11 @@ export interface ILocation {
     coordinates: Array<number>
 }
 
+export interface INotification {
+    id: string,
+    notification_token: string
+}
+
 export class APIException {
     message: string
     status: number

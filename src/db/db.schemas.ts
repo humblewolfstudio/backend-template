@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IChangePassword, IImage, ITrash, IUser, IVerifyEmail } from "../types";
+import { IChangePassword, IImage, INotification, ITrash, IUser, IVerifyEmail } from "../types";
 
 const userSchema = new Schema<IUser>({
     id: {
@@ -121,6 +121,17 @@ const trashSchema = new Schema<ITrash>({
     }
 })
 
+const notificationSchema = new Schema<INotification>({
+    id: {
+        type: String,
+        required: true
+    },
+    notification_token: {
+        type: String,
+        required: true
+    }
+})
+
 trashSchema.index({ location: "2dsphere" });
 
 export const UserSchema = model<IUser>("User", userSchema, "Usuarios");
@@ -128,3 +139,4 @@ export const VerifyEmailSchema = model<IVerifyEmail>('VerifyEmail', verifyEmailS
 export const ChangePasswordSchema = model<IChangePassword>('ChangePassword', changePasswordSchema, 'Change Passwords');
 export const ImageSchema = model<IImage>('Image', imageSchema, 'Images');
 export const TrashSchema = model<ITrash>('Trash', trashSchema, 'Trash');
+export const NotificationSchema = model<INotification>('Notification', notificationSchema, 'Notifications');
