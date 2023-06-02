@@ -20,7 +20,8 @@ type RegisterResponse = {
 type AuthResponse = {
     id: string,
     username: string,
-    email: string
+    email: string,
+    distance: number
 }
 
 export const logInUser = async (username: string, password: string): Promise<LoginResponse | APIException> => {
@@ -75,7 +76,7 @@ export const authenticate = async (token: string): Promise<AuthResponse | APIExc
     try {
         const user = await getUserByToken(token);
         if (user instanceof APIException) throw 1;
-        return { id: user.id, username: user.username, email: user.email };
+        return { id: user.id, username: user.username, email: user.email, distance: user.radarDistance };
     } catch (e) {
         switch (e) {
             case 1:

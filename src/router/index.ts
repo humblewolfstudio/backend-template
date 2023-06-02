@@ -46,4 +46,10 @@ router.get('/verifyEmail', controller.verifyEmail);
 router.get('/generateChangePassowrd', credentialsEndpoints, controller.generateChangePassowrd);
 router.post('/changePassword', controller.changePassword);
 
+//UPLOAD
+router.post('/upload', uploadEndpoints, controller.upload);
+router.get('/getTrash', defaultEndpoints, controller.getTrash);
+
+router.get('/changeRadarDistance', credentialsEndpoints, controller.changeRadarDistance);
+
 export default router;

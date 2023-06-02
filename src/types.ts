@@ -5,7 +5,7 @@ export interface IUser {
     token: string,
     email: string,
     validated: boolean,
-    radarDistance: Number
+    radarDistance: number
 }
 
 export interface IVerifyEmail {
@@ -19,6 +19,28 @@ export interface IChangePassword {
     user_id: string,
     maxTime: number,
     urlToken: string
+}
+
+export interface IImage {
+    id: string,
+    expiration: number,
+    fileName: string
+}
+
+export interface ITrash {
+    id: string,
+    expiration: number,
+    user_id: string,
+    location: ILocation,
+    tags?: string,
+    desc?: string,
+    image_id: string,
+    fileName: string
+}
+
+export interface ILocation {
+    type: 'Point',
+    coordinates: Array<number>
 }
 
 export class APIException {

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IChangePassword, IUser, IVerifyEmail } from "../types";
+import { IChangePassword, IImage, ITrash, IUser, IVerifyEmail } from "../types";
 
 const userSchema = new Schema<IUser>({
     id: {
@@ -27,7 +27,7 @@ const userSchema = new Schema<IUser>({
         required: true
     },
     radarDistance: {
-        type: String,
+        type: Number,
         required: true
     }
 });
@@ -66,6 +66,65 @@ const changePasswordSchema = new Schema<IChangePassword>({
     }
 });
 
+const imageSchema = new Schema<IImage>({
+    id: {
+        type: String,
+        required: true
+    },
+    expiration: {
+        type: Number,
+        required: true
+    },
+    fileName: {
+        type: String,
+        required: true
+    }
+});
+
+const trashSchema = new Schema<ITrash>({
+    id: {
+        type: String,
+        required: true
+    },
+    expiration: {
+        type: Number,
+        required: true
+    },
+    user_id: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+    tags: {
+        type: String
+    },
+    desc: {
+        type: String
+    },
+    image_id: {
+        type: String,
+        required: true
+    },
+    fileName: {
+        type: String,
+        required: true
+    }
+})
+
+trashSchema.index({ location: "2dsphere" });
+
 export const UserSchema = model<IUser>("User", userSchema, "Usuarios");
 export const VerifyEmailSchema = model<IVerifyEmail>('VerifyEmail', verifyEmailSchema, 'Verify Emails');
 export const ChangePasswordSchema = model<IChangePassword>('ChangePassword', changePasswordSchema, 'Change Passwords');
+export const ImageSchema = model<IImage>('Image', imageSchema, 'Images');
+export const TrashSchema = model<ITrash>('Trash', trashSchema, 'Trash');
