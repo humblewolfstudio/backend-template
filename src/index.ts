@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_CONNECTION!).then(() => {
     console.error(e);
 })
 
-app.set('port', 3101);
+app.set('port', process.env.PORT);
 
 app.use(morgan('dev'));
 app.use(express.json());

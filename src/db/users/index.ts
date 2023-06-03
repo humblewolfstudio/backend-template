@@ -119,25 +119,6 @@ export const validateEmail = async (id: string): Promise<boolean | APIException>
     }
 }
 
-export const changeRadarDistance = async (id: string, radarDistance: number) => {
-    try {
-        const user = await UserSchema.findOne({ id });
-        if (!user) throw 1;
-
-        user.radarDistance = radarDistance;
-        await user.save();
-
-        return true;
-    } catch (e) {
-        switch (e) {
-            case 1:
-                return new APIException(400, 'User doesnt exist');
-        }
-        console.error(e);
-        return new APIException(500, 'Internal server error');
-    }
-}
-
 export const assignNotificationToken = async (id: string, notification_token: string) => {
     try {
         const notification = await NotificationSchema.create({ id, notification_token });
