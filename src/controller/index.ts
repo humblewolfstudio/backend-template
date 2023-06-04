@@ -47,7 +47,7 @@ controller.getProfile = async (req: Request, res: Response) => {
 }
 
 controller.generateVerify = async (req: Request, res: Response) => {
-    const token = req.query.token ? String(req.query.token) : '';
+    const token = req.headers.token ? String(req.headers.token) : '';
     if (token === '') return res.status(400).send('Token is required');
     const auth = await authenticate(token);
     if (auth instanceof APIException) return res.status(auth.status).send(auth.message);
